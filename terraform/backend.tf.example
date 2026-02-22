@@ -1,0 +1,12 @@
+# Example Terraform backend configuration
+# Copy to backend.tf and customize
+
+terraform {
+  backend "s3" {
+    bucket         = "your-terraform-state-bucket"
+    key            = "weather-data-viz/terraform.tfstate"
+    region         = "eu-north-1"
+    encrypt        = true
+    dynamodb_table = "terraform-state-lock"
+  }
+}

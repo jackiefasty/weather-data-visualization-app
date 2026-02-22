@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+.eggs/
+
+# Backend models (trained weights)
+backend/models/*.pt
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+build/
+frontend/dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Terraform
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform/
+
+# Env
+.env
+.env.local

@@ -1,0 +1,266 @@
+.app {
+  min-height: 100vh;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.header p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.search-bar {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.search-input-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.search-bar button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background: var(--accent);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.search-bar button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.search-bar button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.search-results {
+  list-style: none;
+  max-width: 700px;
+  margin: 0.5rem auto 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.search-results li {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.search-results li:hover {
+  background: var(--bg-card);
+}
+
+.search-results li .coords {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.error-banner {
+  background: #7f1d1d;
+  color: #fca5a5;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.empty-state small {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.charts-section {
+  margin-top: 2rem;
+}
+
+.charts-header {
+  margin-bottom: 1.5rem;
+}
+
+.charts-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.location-name {
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.coords-info {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.aggregation-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.aggregation-tabs button {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.aggregation-tabs button.active {
+  background: var(--accent);
+  color: var(--bg-primary);
+  border-color: var(--accent);
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.chart-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.chart-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.chart-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.ai-patterns-section {
+  margin-top: 2rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.ai-patterns-section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.ai-summary {
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.risk-badge {
+  display: inline-block;
+  background: var(--bg-card);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.patterns-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pattern-card {
+  background: var(--bg-primary);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.pattern-name {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.pattern-bar {
+  height: 6px;
+  background: var(--bg-card);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.pattern-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.pattern-pct {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.ai-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
