@@ -28,8 +28,12 @@ A full-stack application for visualizing **cloud cover** and **lightning probabi
 ### Backend
 
 ```bash
+
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
+python -m pip install -r requirements.txt (or directly ``` pip install -r requirements.txt ```)
 cd backend
-pip install -r requirements.txt
 uvicorn app:app --reload --port 8000
 ```
 
@@ -47,7 +51,7 @@ Open http://localhost:3000. The frontend proxies `/api` to the backend.
 
 ```bash
 cd backend
-python train_model.py
+python3.11 train_model.py
 ```
 
 ## Project Structure
@@ -57,7 +61,7 @@ python train_model.py
 ├── frontend/         # React + TypeScript web app
 ├── terraform/        # AWS deployment (ECR, S3)
 ├── .github/workflows/  # GitHub Actions CI/CD
-└── technical-description.md  # Detailed architecture
+└── technical-report.md  # Detailed architecture
 ```
 
 ## API Endpoints
