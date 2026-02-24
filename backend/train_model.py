@@ -80,17 +80,24 @@ def train_model():
     model = AtmosphericPatternNet()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     criterion = torch.nn.CrossEntropyLoss()
+    risk_criterion = torch.nn.MSELoss()
     
     model.train()
+
     for epoch in range(50):
         total_loss = 0
         for batch_x, batch_y in loader:
             optimizer.zero_grad()
-            patterns, _ = model(batch_x)
-            loss = criterion(patterns, batch_y)
+            patterns, risk = model(batch_x)
+            
+            # Derive a soft risk label from the pattern label (0=convective = high risk)
+            risk_label = (batch_y == 0).float().unsqueeze(1) * 0.8 + 0.1
+            
+            loss = criterion(patterns, batch_y) + risk_criterion(risk, risk_label)
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
+        
         if (epoch + 1) % 10 == 0:
             print(f"Epoch {epoch+1}/50, Loss: {total_loss/len(loader):.4f}")
     
