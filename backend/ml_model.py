@@ -39,25 +39,26 @@ def _extract_features_from_timeseries(time_series: list) -> np.ndarray:
     return np.array(features, dtype=np.float32)
 
 
-class AtmosphericPatternNet(nn.Module):
-    """Neural network for atmospheric pattern recognition."""
-    
-    def __init__(self, input_size: int = 8, hidden_sizes: list = [64, 32, 16]):
-        super().__init__()
-        layers = []
-        prev = input_size
-        for h in hidden_sizes:
-            layers.extend([nn.Linear(prev, h), nn.ReLU(), nn.BatchNorm1d(h), nn.Dropout(0.2)])
-            prev = h
-        self.encoder = nn.Sequential(*layers)
-        self.pattern_head = nn.Linear(prev, 5)  # 5 pattern categories
-        self.risk_head = nn.Linear(prev, 1)     # Convective risk score
+if TORCH_AVAILABLE:
+    class AtmosphericPatternNet(nn.Module):
+        """Neural network for atmospheric pattern recognition."""
         
-    def forward(self, x):
-        h = self.encoder(x)
-        patterns = self.pattern_head(h)
-        risk = torch.sigmoid(self.risk_head(h))
-        return patterns, risk
+        def __init__(self, input_size: int = 8, hidden_sizes: list = [64, 32, 16]):
+            super().__init__()
+            layers = []
+            prev = input_size
+            for h in hidden_sizes:
+                layers.extend([nn.Linear(prev, h), nn.ReLU(), nn.BatchNorm1d(h), nn.Dropout(0.2)])
+                prev = h
+            self.encoder = nn.Sequential(*layers)
+            self.pattern_head = nn.Linear(prev, 5)  # 5 pattern categories
+            self.risk_head = nn.Linear(prev, 1)     # Convective risk score
+            
+        def forward(self, x):
+            h = self.encoder(x)
+            patterns = self.pattern_head(h)
+            risk = torch.sigmoid(self.risk_head(h))
+            return patterns, risk
 
 
 class AtmosphericPatternModel:
