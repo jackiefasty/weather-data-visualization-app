@@ -15,7 +15,7 @@ interface AIPatternsPanelProps {
 }
 
 export default function AIPatternsPanel({ patterns }: AIPatternsPanelProps) {
-  const data = patterns as AIPatternsData
+  const data = patterns as unknown as AIPatternsData
   if (!data?.patterns?.length) return null
 
   return (
