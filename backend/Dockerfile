@@ -12,6 +12,7 @@ COPY api_client.py .
 COPY geocoding.py .
 COPY ml_model.py .
 COPY app.py .
+COPY train_model.py .
 
 # Create models directory for ML weights
 RUN mkdir -p models
