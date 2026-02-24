@@ -83,9 +83,16 @@ def get_weather_by_address(q: str = Query(..., min_length=2)):
     if not results:
         raise HTTPException(status_code=404, detail="Location not found")
     loc = results[0]
-    data = get_forecast_for_location(loc["lon"], loc["lat"])
-    data["location"] = loc.get("display_name", "")
-    return data
+    try:
+        data = get_forecast_for_location(loc["lon"], loc["lat"])
+    except httpx.HTTPStatusError as exc:
+        if exc.response.status_code == 404:
+            # SMHI has no forecast for this lat/lon (outside Nordic region), so we return a 404
+            raise HTTPException(status_code=404, detail="SMHI has no forecast for this location (likely outside Nordic coverage).")
+            # Other HTTP errors still bubble up as 500, so we also handle that
+            raise
+        data["location"] = loc.get("display_name", "")
+        return data
 
 
 @app.get("/api/ai-patterns")
