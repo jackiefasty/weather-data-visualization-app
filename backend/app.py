@@ -5,8 +5,8 @@ FastAPI application serving weather data from SMHI API with geocoding support.
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from typing import Optional
+import httpx
 
 from api_client import get_forecast_for_location, call_smhi_forecast_api
 from geocoding import geocode_address
@@ -80,6 +80,7 @@ def get_weather(
 def get_weather_by_address(q: str = Query(..., min_length=2)):
     """Get weather for first matching location from address search."""
     results = geocode_address(q, limit=5)
+    
     # Filter for countries SMHI supports best
     nordic = [r for r in results if r.get("country_code") in {"se", "no", "fi", "dk"}]
     if nordic:
@@ -94,10 +95,10 @@ def get_weather_by_address(q: str = Query(..., min_length=2)):
         if exc.response.status_code == 404:
             # SMHI has no forecast for this lat/lon (outside Nordic region), so we return a 404
             raise HTTPException(status_code=404, detail="SMHI has no forecast for this location (likely outside Nordic coverage).")
-            # Other HTTP errors still bubble up as 500, so we also handle that
-            raise
-        data["location"] = loc.get("display_name", "")
-        return data
+        # Other HTTP errors still bubble up as 500, so we also handle that
+        raise
+    data["location"] = loc.get("display_name", "")
+    return data
 
 
 @app.get("/api/ai-patterns")
