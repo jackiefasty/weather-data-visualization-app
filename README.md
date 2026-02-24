@@ -4,7 +4,7 @@ A full-stack application for visualizing **cloud cover** and **lightning probabi
 
 ## Features
 
-- **Search bar** – Address, city, postal code, or coordinates (e.g. `Stockholm`, `58.0, 16.0`)
+- **Search bar** – Address, city, postal code, or coordinates (e.g. `Stockholm`, `59.3, 18.0`)
 - **Charts** – Cloud cover (%) and lightning probability (%) with hourly/daily/monthly aggregation
 - **Geocoding** – Nominatim (OpenStreetMap) for address → coordinates
 - **AI patterns** – Deep learning model trained on SMHI data to detect atmospheric patterns
@@ -31,6 +31,7 @@ A full-stack application for visualizing **cloud cover** and **lightning probabi
 
 python3.12 -m venv .venv
 source .venv/bin/activate
+python -m pip install fastapi "uvicorn[standard]"
 python -m pip install -U pip
 python -m pip install -r requirements.txt (or directly ``` pip install -r requirements.txt ```)
 cd backend

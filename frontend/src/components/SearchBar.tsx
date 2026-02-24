@@ -77,7 +77,7 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
           }}
           onBlur={() => setTimeout(() => setShowResults(false), 200)}
           onFocus={() => results.length > 0 && setShowResults(true)}
-          placeholder="Address, city, postal code, or coordinates (e.g. Stockholm, 12345, 58.0, 16.0)"
+          placeholder="Address, city, postal code, or coordinates (e.g. Stockholm, 12345, 59.3, 18.0)"
           disabled={loading}
           autoComplete="off"
         />
