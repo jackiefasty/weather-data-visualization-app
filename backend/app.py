@@ -72,6 +72,13 @@ def get_weather(
     try:
         data = get_forecast_for_location(lon, lat)
         return data
+    except httpx.HTTPStatusError as exc:
+        if exc.response.status_code == 404:
+            raise HTTPException(
+                status_code=404,
+                detail="SMHI has no forecast for this location (likely outside Nordic coverage).",
+            )
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -80,7 +87,7 @@ def get_weather(
 def get_weather_by_address(q: str = Query(..., min_length=2)):
     """Get weather for first matching location from address search."""
     results = geocode_address(q, limit=5)
-    
+
     # Filter for countries SMHI supports best
     nordic = [r for r in results if r.get("country_code") in {"se", "no", "fi", "dk"}]
     if nordic:
@@ -115,6 +122,13 @@ def get_ai_patterns(
         model = get_ml_model()
         patterns = model.analyze_forecast(raw_data)
         return patterns
+    except httpx.HTTPStatusError as exc:
+        if exc.response.status_code == 404:
+            raise HTTPException(
+                status_code=404,
+                detail="SMHI has no forecast for this location (likely outside Nordic coverage).",
+            )
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
