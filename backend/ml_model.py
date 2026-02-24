@@ -5,6 +5,7 @@ Trained on historical SMHI forecast/observation data.
 """
 
 import numpy as np
+import logging
 from pathlib import Path
 from typing import Optional
 
@@ -13,11 +14,14 @@ try:
     import torch
     import torch.nn as nn
     TORCH_AVAILABLE = True
+    TORCH_IMPORT_ERROR = None
 except ImportError:
     TORCH_AVAILABLE = False
+    TORCH_IMPORT_ERROR = "PyTorch is not installed in the backend runtime."
 
 MODEL_DIR = Path(__file__).parent / "models"
 MODEL_PATH = MODEL_DIR / "atmospheric_pattern_model.pt"
+LOGGER = logging.getLogger(__name__)
 
 
 def _extract_features_from_timeseries(time_series: list) -> np.ndarray:
@@ -70,6 +74,8 @@ class AtmosphericPatternModel:
     def __init__(self, model_path: Optional[Path] = None):
         self.model_path = model_path or MODEL_PATH
         self.model = None
+        self._fallback_reason: Optional[str] = None
+        self._fallback_warning_emitted = False
         self._load_or_init()
     
     def _load_or_init(self):
@@ -80,10 +86,23 @@ class AtmosphericPatternModel:
                     state = torch.load(self.model_path, map_location="cpu")
                     self.model.load_state_dict(state.get("model_state_dict", state))
                     self.model.eval()
+                    self._fallback_reason = None
                 except Exception:
-                    pass
+                    self.model = None
+                    self._fallback_reason = (
+                        f"Could not load model weights from {self.model_path}; using heuristic fallback."
+                    )
+                    LOGGER.exception(self._fallback_reason)
+            else:
+                self.model = None
+                self._fallback_reason = (
+                    f"Model weights not found at {self.model_path}; using heuristic fallback."
+                )
+                LOGGER.warning(self._fallback_reason)
         else:
             self.model = None
+            self._fallback_reason = TORCH_IMPORT_ERROR
+            LOGGER.warning("%s Falling back to heuristic pattern probabilities.", self._fallback_reason)
     
     def analyze_forecast(self, raw_data: dict) -> dict:
         """
@@ -112,6 +131,13 @@ class AtmosphericPatternModel:
                 pattern_probs = torch.softmax(patterns_logits, dim=-1).numpy()[0]
         else:
             # Fallback: heuristic pattern detection
+            if not self._fallback_warning_emitted:
+                reason = self._fallback_reason or "Model unavailable."
+                LOGGER.warning(
+                    "AtmosphericPatternModel is using fallback heuristic probabilities (fixed 20%% baseline per class). Reason: %s",
+                    reason,
+                )
+                self._fallback_warning_emitted = True
             risk_val = float(np.clip(
                 features[:, 4].mean() * 1.5 + features[:, 3].std() * 0.5 + features[:, 6].mean() * 2,
                 0, 1
