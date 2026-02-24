@@ -49,7 +49,7 @@ function App() {
         const res = await fetch(`${API_BASE}/api/weather/by-address?q=${encodeURIComponent(query)}`)
         if (!res.ok) {
           const err = await res.json().catch(() => ({}))
-          throw new Error(err.detail || 'Location not found')
+          throw new Error(err.detail || 'Location not found.')
         }
         const data = await res.json()
         setWeatherData(data)

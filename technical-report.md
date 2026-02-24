@@ -11,6 +11,8 @@ A full-stack application that visualizes **cloud cover** and **lightning probabi
 - **Deployment**: Terraform (AWS)
 - **CI/CD**: GitHub Actions
 
+Limitation: The app is only able to show data from and within the Nordic region. Outisde it it will show "Location not found"
+
 ## Architecture
 
 ```
