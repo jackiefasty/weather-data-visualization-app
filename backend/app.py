@@ -95,7 +95,7 @@ def get_weather_by_address(q: str = Query(..., min_length=2)):
     elif results:
         loc = results[0]  # fallback to best global match
     else:
-        raise HTTPException(status_code=404, detail="Location not found")
+        raise HTTPException(status_code=404, detail="Location not found.")
     try:
         data = get_forecast_for_location(loc["lon"], loc["lat"])
     except httpx.HTTPStatusError as exc:
