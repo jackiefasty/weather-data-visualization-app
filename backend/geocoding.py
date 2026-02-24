@@ -57,6 +57,7 @@ def geocode_address(query: str, limit: int = 5) -> list[dict]:
             "display_name": r.get("display_name", ""),
             "type": r.get("type", ""),
             "importance": r.get("importance", 0),
+            "country_code": (r.get("address", {}) or {}).get("country_code", "").lower(),
         }
         for r in results
     ]
