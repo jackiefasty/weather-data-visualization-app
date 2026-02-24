@@ -79,10 +79,15 @@ def get_weather(
 @app.get("/api/weather/by-address")
 def get_weather_by_address(q: str = Query(..., min_length=2)):
     """Get weather for first matching location from address search."""
-    results = geocode_address(q, limit=1)
-    if not results:
+    results = geocode_address(q, limit=5)
+    # Filter for countries SMHI supports best
+    nordic = [r for r in results if r.get("country_code") in {"se", "no", "fi", "dk"}]
+    if nordic:
+        loc = nordic[0]
+    elif results:
+        loc = results[0]  # fallback to best global match
+    else:
         raise HTTPException(status_code=404, detail="Location not found")
-    loc = results[0]
     try:
         data = get_forecast_for_location(loc["lon"], loc["lat"])
     except httpx.HTTPStatusError as exc:
