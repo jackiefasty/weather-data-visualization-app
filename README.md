@@ -55,6 +55,7 @@ cd backend
 python3.11 train_model.py
 ```
 
+
 ## Project Structure
 
 ```
@@ -77,6 +78,10 @@ python3.11 train_model.py
 ## SMHI Coverage
 
 SMHI provides forecast data for the **Nordic region** (Sweden, Norway, Finland, Denmark, Baltic). Use Nordic coordinates for best results.
+
+## Demo
+
+https://www.loom.com/share/7cbdf7f5ceed406bb7070d2ca99a0fdb
 
 ## License
 
